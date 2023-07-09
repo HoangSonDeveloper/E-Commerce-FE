@@ -6,7 +6,7 @@ pipeline {
                 git branch: 'ddphuoc', url: 'https://github.com/HoangSonDeveloper/E-Commerce-FE.git'
             }
         }
-                stage('Deploy stage') {
+        stage('Deploy stage') {
             steps {
                 withDockerRegistry(credentialsId: 'ddphuoc-dockerhub', url: 'https://index.docker.io/v1/') {
                     sh 'docker build -t iphuoc0309/e-commerce-fe:dev .'
@@ -18,13 +18,10 @@ pipeline {
             steps {
                 script {
                     sshagent(['ssh-ecommerce']) {
-                        sh 'ssh -o StrictHostKeyChecking=no -l root 167.172.70.225'
-                        sh 'docker pull iphuoc0309/e-commerce-fe:dev'
-                        sh 'docker run -d -p 80:3000 iphuoc0309/e-commerce-fe:dev'
+                        sh 'ssh -o StrictHostKeyChecking=no -l root 167.172.70.225 "docker pull iphuoc0309/e-commerce-fe:dev && docker run -d -p 80:3000 iphuoc0309/e-commerce-fe:dev"'
                     }
                 }
             }
         }
     }
 }
-```
