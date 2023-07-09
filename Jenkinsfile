@@ -9,7 +9,7 @@ pipeline {
         stage('SSH server stage') {
             steps {
                 script {
-                    sshagent(['ssh-remote-access', 'ssh-remote']) {
+                    sshagent(['ssh-remote-access']) {
                         sh 'ssh -o StrictHostKeyChecking=no -l root 167.172.70.225 touch test.txt'
                     }
                 }
