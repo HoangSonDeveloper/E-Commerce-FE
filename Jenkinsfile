@@ -1,5 +1,11 @@
 pipeline {
-    agent any
+    // use python agent
+    agent {
+        docker {
+            image 'python:3.7.2'
+            args '-u root'
+        }
+    }
     options {
         buildDiscarder(logRotator(numToKeepStr: '5'))
     }
