@@ -40,7 +40,9 @@ pipeline {
             steps {
                 script {
                     sshagent(['ssh-remote']) {
-                        sh 'ssh -o StrictHostKeyChecking=no -l root 167.172.70.225 docker run -d --name e-commerce-fe --restart=on-failure -p 80:3000 iphuoc0309/e-commerce-fe:dev'
+                        sh '''ssh -o StrictHostKeyChecking=no -l root 167.172.70.225 &&
+                        docker stop e-commerce-fe &&
+                        docker run -d e-commerce-fe --restart=on-failure -p 80:3000 iphuoc0309/e-commerce-fe:dev'''
                     }
                 }
             }
