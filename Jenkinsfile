@@ -3,7 +3,7 @@ pipeline {
         stages {
             stage('Clone repository stage') {
                 steps {
-                    git "https://github.com/HoangSonDeveloper/E-Commerce-FE.git"
+                    git branch: 'ddphuoc', url: 'https://github.com/HoangSonDeveloper/E-Commerce-FE.git'
                 }
             }
             stage('SSH server stage') {
