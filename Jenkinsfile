@@ -46,6 +46,19 @@ pipeline {
                 }
             }
         }
+        stage('Check if Docker container exists') {
+            steps {
+                script {
+                    sshagent(['ssh-remote']) {
+                        def containerExists = sh(returnStatus: true, script: "ssh -o StrictHostKeyChecking=no -l root 167.172.70.225 'docker inspect -f {{.Name}} e-commerce-fe 2>/dev/null'").trim()
+                        if (containerExists == "/e-commerce-fe") {
+                            sh "ssh -o StrictHostKeyChecking=no -l root 167.172.70.225 'docker stop e-commerce-fe'"
+                        sh "ssh -o StrictHostKeyChecking=no -l root 167.172.70.225 'docker rm e-commerce-fe'"
+                        }
+                    }
+                }
+            }
+        }
         stage('Run Docker container') {
             steps {
                 script {
@@ -57,10 +70,3 @@ pipeline {
         }
     }
 }
-
-
-
-
-
-
-
