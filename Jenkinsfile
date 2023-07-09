@@ -29,25 +29,18 @@ pipeline {
         }
         stage('Pull Docker image') {
             steps {
-                script {
-                    sshagent(['ssh-remote']) {
-                        sh 'ssh -o StrictHostKeyChecking=no -l root 167.172.70.225 docker pull iphuoc0309/e-commerce-fe:dev'
+            script {
+                sshagent(['ssh-remote']) {
+                    sh 'ssh -o StrictHostKeyChecking=no -l root 167.172.70.225 docker pull iphuoc0309/e-commerce-fe:dev'
                     }
                 }
             }
         }
-        stage('Stop Docker image') {
+        stage('Run Docker container') {
             steps {
                 script {
                     sshagent(['ssh-remote']) {
-                        sh "ssh -o StrictHostKeyChecking=no -l root 167.172.70.225 'docker stop e-commerce-fe'"
-                    }
-                }
-        stage('Run Docker image') {
-            steps {
-                script {
-                    sshagent(['ssh-remote']) {
-                        sh "ssh -o StrictHostKeyChecking=no -l root 167.172.70.225 'docker run -d e-commerce-fe --restart=on-failure -p 80:3000 iphuoc0309/e-commerce-fe:dev'"
+                        sh "ssh -o StrictHostKeyChecking=no -l root 167.172.70.225 'docker run -d --restart=on-failure -p 80:3000 --name e-commerce-fe iphuoc0309/e-commerce-fe:dev'"
                     }
                 }
             }
