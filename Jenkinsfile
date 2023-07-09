@@ -1,17 +1,28 @@
 pipeline {
     agent any
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '5'))
+    }
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('docker-credentials')
+    }
     stages {
-        stage('Clone repository') {
+        stage('Clone Github repository') {
             steps {
                 git branch: 'ddphuoc', url: 'https://github.com/HoangSonDeveloper/E-Commerce-FE.git'
             }
         }
-        stage('Build image') {
+        stage('Build Docker image') {
             steps {
                 sh 'docker build -t iphuoc0309/e-commerce-fe:dev .'
             }
         }
-        stage('Push image') {
+        stage('Login to Docker') {
+            steps {
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+            }
+        }
+        stage('Push Docker image') {
             steps {
                 withDockerRegistry(credentialsId: 'ddphuoc-dockerhub', url: "") {
                     sh 'docker push iphuoc0309/e-commerce-fe:dev'
