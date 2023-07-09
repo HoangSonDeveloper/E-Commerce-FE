@@ -36,16 +36,6 @@ pipeline {
                 }
             }
         }
-        stage('Stop and remove existing Docker container') {
-            steps {
-                script {
-                    sshagent(['ssh-remote']) {
-                        sh "ssh -o StrictHostKeyChecking=no -l root 167.172.70.225 'docker stop e-commerce-fe'"
-                        sh "ssh -o StrictHostKeyChecking=no -l root 167.172.70.225 'docker rm e-commerce-fe'"
-                    }
-                }
-            }
-        }
         stage('Check if Docker container exists') {
             steps {
                 script {
@@ -53,7 +43,7 @@ pipeline {
                         def containerExists = sh(returnStatus: true, script: "ssh -o StrictHostKeyChecking=no -l root 167.172.70.225 'docker inspect -f {{.Name}} e-commerce-fe 2>/dev/null'").trim()
                         if (containerExists == "/e-commerce-fe") {
                             sh "ssh -o StrictHostKeyChecking=no -l root 167.172.70.225 'docker stop e-commerce-fe'"
-                        sh "ssh -o StrictHostKeyChecking=no -l root 167.172.70.225 'docker rm e-commerce-fe'"
+                            sh "ssh -o StrictHostKeyChecking=no -l root 167.172.70.225 'docker rm e-commerce-fe'"
                         }
                     }
                 }
