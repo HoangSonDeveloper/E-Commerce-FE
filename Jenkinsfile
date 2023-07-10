@@ -2,6 +2,13 @@ pipeline {
     agent any
     environment {
         DOCKERHUB_CREDENTIALS = credentials('docker-credentials')
+        REMOTE_HOST = '167.172.70.225'
+        DOCKER_IMAGE_TAG = 'dev'
+        DOCKER_IMAGE_NAME = 'e-commerce-fe'
+        DOCKER_REPOSITORY = 'iphuoc0309'
+        CONTAINER_NAME = 'e-commerce-fe'
+        CONTAINER_PORT = 80
+        HOST_PORT = 3000
     }
     stages {
         stage('Clone repository') {
@@ -9,48 +16,21 @@ pipeline {
                 git branch: 'ddphuoc', url: 'https://github.com/HoangSonDeveloper/E-Commerce-FE.git'
             }
         }
-        stage('Delete old Docker images') {
+        stage('Build and push Docker image') {
             steps {
-                sh 'docker system prune --force --all --volumes'
+                sh 'docker build -t $DOCKER_REPOSITORY/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG .'
+                sh 'docker login -u $DOCKERHUB_CREDENTIALS_USR -p $DOCKERHUB_CREDENTIALS_PSW'
+                sh 'docker push $DOCKER_REPOSITORY/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG'
             }
         }
-        stage('Build Docker image') {
-            steps {
-                sh 'docker build -t iphuoc0309/e-commerce-fe:dev .'
-            }
-        }
-        stage('Login to Dockerhub') {
-            steps {
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-            }
-        }
-        stage('Push Docker image') {
-            steps {
-                sh 'docker push iphuoc0309/e-commerce-fe:dev'
-            }
-        }
-        stage('Pull Docker image') {
-            steps {
-            script {
-                sshagent(['ssh-remote']) {
-                    sh 'ssh -o StrictHostKeyChecking=no -l root 167.172.70.225 docker pull iphuoc0309/e-commerce-fe:dev'
-                    }
-                }
-            }
-        }
-        stage('Stop and remove all old containers') {
-            steps {
-                sshagent(['ssh-remote']) {
-                    sh 'ssh -o StrictHostKeyChecking=no -l root 167.172.70.225 docker stop $(docker ps -a -q) docker system prune --force --all --volumes'
-                    }
-                }
-            }
-        }
-        stage('Run Docker container') {
+        stage('Deploy to remote server') {
             steps {
                 script {
                     sshagent(['ssh-remote']) {
-                        sh "ssh -o StrictHostKeyChecking=no -l root 167.172.70.225 'docker run -d --restart=on-failure -p 80:3000 --name e-commerce-fe iphuoc0309/e-commerce-fe:dev'"
+                        sh "ssh -o StrictHostKeyChecking=no -l root $REMOTE_HOST 'docker pull $DOCKER_REPOSITORY/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG'"
+                        sh "ssh -o StrictHostKeyChecking=no -l root $REMOTE_HOST 'docker stop $CONTAINER_NAME || true'"
+                        sh "ssh -o StrictHostKeyChecking=no -l root $REMOTE_HOST 'docker rm $CONTAINER_NAME || true'"
+                        sh "ssh -o StrictHostKeyChecking=no -l root $REMOTE_HOST 'docker run -d --restart=on-failure -p $CONTAINER_PORT:$HOST_PORT --name $CONTAINER_NAME $DOCKER_REPOSITORY/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG'"
                     }
                 }
             }
