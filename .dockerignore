@@ -1,0 +1,27 @@
+# Files and directories to ignore when building Docker images
+
+# Ignore specific files
+file.txt
+secret.key
+
+# Ignore specific directories
+node_modules/
+dist/
+
+# Ignore all files and directories starting with a dot
+.*
+
+# Ignore Docker related files
+Dockerfile
+.dockerignore
+.docker/
+
+# Ignore development and debugging files
+*.log
+.vscode/
+
+# Ignore package manager cache
+.pnpm/
+.npm/
+.yarn/
+yarn-error.log
