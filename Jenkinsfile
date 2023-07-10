@@ -1,14 +1,5 @@
 pipeline {
-    // use python agent
-    agent {
-        docker {
-            image 'python:3.7.2'
-            args '-u root'
-        }
-    }
-    options {
-        buildDiscarder(logRotator(numToKeepStr: '5'))
-    }
+    agent any
     environment {
         DOCKERHUB_CREDENTIALS = credentials('docker-credentials')
     }
@@ -20,7 +11,7 @@ pipeline {
         }
         stage('Delete old Docker images') {
             steps {
-                sh 'docker image prune -f'
+                sh 'docker system prune --force --all --volumes'
             }
         }
         stage('Build Docker image') {
@@ -43,19 +34,6 @@ pipeline {
             script {
                 sshagent(['ssh-remote']) {
                     sh 'ssh -o StrictHostKeyChecking=no -l root 167.172.70.225 docker pull iphuoc0309/e-commerce-fe:dev'
-                    }
-                }
-            }
-        }
-        stage('Check if Docker container exists') {
-            steps {
-                script {
-                    sshagent(['ssh-remote']) {
-                        def containerExists = sh(returnStatus: true, script: "ssh -o StrictHostKeyChecking=no -l root 167.172.70.225 'docker inspect -f {{.Name}} e-commerce-fe 2>/dev/null'").trim()
-                        if (containerExists == "/e-commerce-fe") {
-                            sh "ssh -o StrictHostKeyChecking=no -l root 167.172.70.225 'docker stop e-commerce-fe'"
-                            sh "ssh -o StrictHostKeyChecking=no -l root 167.172.70.225 'docker rm e-commerce-fe'"
-                        }
                     }
                 }
             }
