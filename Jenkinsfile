@@ -18,9 +18,9 @@ pipeline {
                 git branch: 'ddphuoc', url: 'https://github.com/HoangSonDeveloper/E-Commerce-FE.git'
             }
         }
-        stage('Delete old Docker image') {
+        stage('Delete old Docker images') {
             steps {
-                sh 'docker rmi -f iphuoc0309/e-commerce-fe:dev'
+                sh 'docker image prune -f'
             }
         }
         stage('Build Docker image') {
