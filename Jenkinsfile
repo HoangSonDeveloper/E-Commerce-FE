@@ -38,6 +38,14 @@ pipeline {
                 }
             }
         }
+        stage('Stop and remove all old containers') {
+            steps {
+                sshagent(['ssh-remote']) {
+                    sh 'ssh -o StrictHostKeyChecking=no -l root 167.172.70.225 docker stop $(docker ps -a -q) docker system prune --force --all --volumes'
+                    }
+                }
+            }
+        }
         stage('Run Docker container') {
             steps {
                 script {
