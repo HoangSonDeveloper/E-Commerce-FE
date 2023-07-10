@@ -134,7 +134,7 @@ export const LectureList = (props) => {
                 <div
                   style={{ fontSize: 24, fontWeight: "bold", marginBottom: 24 }}
                 >
-                  Fields
+                  Field
                 </div>
                 <Space size={40} style={{ overflow: "scroll" }}>
                   {avatar.map((i) => {
@@ -152,7 +152,7 @@ export const LectureList = (props) => {
                 <div
                   style={{ fontSize: 24, fontWeight: "bold", marginBottom: 24 }}
                 >
-                  Fields
+                  Field
                 </div>
                 <Space size={40} style={{ overflow: "scroll" }}>
                   {avatar.map((i) => {
