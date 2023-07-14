@@ -7,7 +7,7 @@ pipeline {
         DOCKER_IMAGE_NAME = 'e-commerce-fe'
         DOCKER_REPOSITORY = 'iphuoc0309'
         CONTAINER_NAME = 'e-commerce-fe'
-        CONTAINER_PORT = 80
+        CONTAINER_PORT = 8000
         HOST_PORT = 3000
     }
     stages {
@@ -30,7 +30,7 @@ pipeline {
                         sh "ssh -o StrictHostKeyChecking=no -l root $REMOTE_HOST 'docker pull $DOCKER_REPOSITORY/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG'"
                         sh "ssh -o StrictHostKeyChecking=no -l root $REMOTE_HOST 'docker stop $CONTAINER_NAME || true'"
                         sh "ssh -o StrictHostKeyChecking=no -l root $REMOTE_HOST 'docker rm $CONTAINER_NAME || true'"
-                        sh "ssh -o StrictHostKeyChecking=no -l root $REMOTE_HOST 'docker run -d --restart=on-failure -p $CONTAINER_PORT:$HOST_PORT --name $CONTAINER_NAME $DOCKER_REPOSITORY/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG'"
+                        sh "ssh -o StrictHostKeyChecking=no -l root $REMOTE_HOST 'docker run -d --restart always -p $CONTAINER_PORT:$HOST_PORT --name $CONTAINER_NAME $DOCKER_REPOSITORY/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG'"
                     }
                 }
             }
