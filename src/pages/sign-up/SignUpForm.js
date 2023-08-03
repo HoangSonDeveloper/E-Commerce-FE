@@ -7,7 +7,7 @@ import {Input, Button, Space, Row, Col, Form, Checkbox, Divider} from 'antd'
 import {UserOutlined, LockOutlined, EyeTwoTone, EyeInvisibleOutlined} from '@ant-design/icons'
 
 
-const LoginForm=() => {
+const SignUpForm=() => {
   
   const router = useRouter()
   const [form] = Form.useForm()
@@ -39,18 +39,18 @@ const LoginForm=() => {
     }
   },[])
 
-  const handleLogin = async () =>{
+  const handleSignUp = async () =>{
     try{
-        if(!values.email || !values.password){
-            alert("Email or password required")
+        if(!values.email || !values.password ||values.confirm){
+            alert("Email or Password/Confirm Password required")
             return
         }
-        const res = await fetch("https://strapi.learnbox.live/api/auth/local/login", {
+        const res = await fetch("https://strapi.learnbox.live/api/auth/local/register", {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({email: values.email, password: values.password}),
+            body: JSON.stringify({email: values.email, password: values.password, username: values.username}),
         })
         if (!res.ok) {
             if(res.status===400){
@@ -61,17 +61,16 @@ const LoginForm=() => {
                 } else {
                     alert("Failed Login. Try again")
                 }
-            } else {
-                throw new Error('Fail to fetch data')
-            }
+            } 
         }
-
+        console.log(res);
         const data = await res.json();
+        console.log(data);
 
         if(data&&data.jwt){
             localStorage.setItem("token", data.jwt)
-            alert("Login successful!")
-            router.push('/')
+            alert("SignUp successful!")
+            router.push('/login')
         }
     } catch (error){
         console.error(error.message)
@@ -84,17 +83,17 @@ const LoginForm=() => {
         style={{
           textAlign: 'center',
           fontSize: '22px', 
-          marginBottom: '10px',
+          marginBottom: '6px',
           width: '340px'
         }}
-        >Log In
+        >Sign Up
       </h1>
 
       <Form
         form={form}
-        name="login-form"
+        name="signup-form"
         initialValues={{ remember: true }}
-        onFinish={handleLogin}
+        onFinish={handleSignUp}
         layout='vertical'
       >
         <Form.Item
@@ -123,6 +122,30 @@ const LoginForm=() => {
             placeholder="Enter your email address .."
           />
         </Form.Item>
+
+        <Form.Item
+          label="Username"
+          name="username"
+          rules={[
+            {
+              required: true,
+              message: 'Please enter your username',
+            },
+          ]}
+        >
+          <Input
+            prefix={<UserOutlined className="site-form-item-icon" />}
+            style={{
+              height: '2.5rem',  
+              padding: '0.75rem', 
+              borderRadius: '0.25rem', 
+              borderWidth: '1px', 
+              borderColor: '#555FD9', 
+            }} 
+            placeholder="Enter your username .."
+          />
+        </Form.Item>
+
         <Form.Item
           label="Password"
           name="password"
@@ -148,6 +171,43 @@ const LoginForm=() => {
             }
           />
         </Form.Item>
+
+        <Form.Item
+          name="confirm"
+          label="Confirm Password"
+          dependencies={['password']}
+          hasFeedback
+          rules={[
+            {
+              required: true,
+              message: 'Please confirm your password!',
+            },
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (!value || getFieldValue('password') === value) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(new Error('The new password that you entered do not match!'));
+              },
+            }),
+          ]}
+        >
+          <Input.Password
+            prefix={<LockOutlined className="site-form-item-icon" />} 
+            style={{
+              height: '2.5rem',  
+              padding: '0.75rem', 
+              borderRadius: '0.25rem', 
+              borderWidth: '1px', 
+              borderColor: '#555FD9', 
+            }} 
+            placeholder="Enter your confirm password .."
+            iconRender={(visible) =>
+              visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+            }
+          />
+        </Form.Item>
+
         <Form.Item >
           <Row justify='space-between'>
             <Col>
@@ -177,23 +237,20 @@ const LoginForm=() => {
             disabled={!submittable}
             
           >
-            Log in
+            Sign Up
           </Button>
         </Form.Item>
 
-        <Divider>OR</Divider>
-
         <p style={{
           textAlign: 'center', 
-          marginTop: '4px', 
-          marginBottom: '4px'
+          marginBottom: '2px'
         }
         }
-          >Already have an account?
+          >Have an account?
         </p>
         <Button
           type="primary"
-          onClick={() => router.push('/sign-up')}
+          onClick={() => router.push('/login')}
           style={{
             width: '100%', 
             height: '36px',
@@ -203,11 +260,11 @@ const LoginForm=() => {
           }}
           className= "bg-[#555FD9] hover:bg-[#1e2bb7] active:bg-[#040c6e]"
         >
-          Sign up
+          Log In
         </Button>
       </Form>
     </Space>
   )
 }
 
-export default LoginForm;
+export default SignUpForm;
