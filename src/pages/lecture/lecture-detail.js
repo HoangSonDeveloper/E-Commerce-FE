@@ -1,6 +1,7 @@
 "use client";
 import React from 'react';
 import {Col, Image, Input, Layout, Menu, Pagination, Row, Space} from "antd";
+import Container from "@/components/Container";
 
 const { Header, Footer, Sider, Content } = Layout;
 
@@ -25,28 +26,7 @@ const iconSearch = "https://img.mservice.com.vn/momo_app_v2/new_version/img/appx
 const LectureDetail = ({onPress})=>{
 
     return <Space direction="vertical" style={{ width: '100%' }} size={[0, 48]}>
-        <Layout>
-            <Header style={{backgroundColor: "white"}}>
-                <Row>
-                    <Col span={8}>
-                        <div style={{}}>
-                            <Input placeholder={"Search something!"} style={{borderColor: "#555FD9", borderWidth: 2, marginRight: 12, height: 38, borderTopRightRadius: 19, borderBottomRightRadius: 19}}/>
-                            <div style={{backgroundColor: "#555FD9",display: "flex",borderRadius: 18, height: 36, width: 36, position: "absolute", top:14,right: 1, justifyContent: "center", alignItems: "center"}}>
-                                <Image src={iconSearch} style={{width: 24, height: 24}}  preview={false}/>
-                            </div>
-                        </div>
-                    </Col>
-                    <Col span={16}>
-                        <Menu mode="horizontal" items={tabPage.map((i, ii)=>{
-                            const key = ii+1
-                            return {
-                                key,
-                                label: i.name
-                            }
-                        })}/>
-                    </Col>
-                </Row>
-            </Header>
+        <Container>
             <Content>
                 <Col style={{backgroundColor: "#E7762F",paddingTop: 40, paddingBottom: 40, marginTop: 40,marginBottom: 40, marginLeft: 40, marginRight: 40}}>
                     <Row style={{paddingLeft: 200, paddingRight:  40}}>
@@ -95,7 +75,7 @@ const LectureDetail = ({onPress})=>{
             {/*<Footer style={{height: 240, borderTopWidth: 8, marginTop: 40, justifyContent: "center", alignItems: "center"}}>*/}
             {/*    Footer*/}
             {/*</Footer>*/}
-        </Layout>
+        </Container>
     </Space>
 
 }
