@@ -22,7 +22,7 @@ const avatar = [
 
 const iconSearch = "https://img.mservice.com.vn/momo_app_v2/new_version/img/appx_icon/24_navigation_search.png"
 
-export const LectureDetail = ({onPress})=>{
+const LectureDetail = ({onPress})=>{
 
     return <Space direction="vertical" style={{ width: '100%' }} size={[0, 48]}>
         <Layout>
@@ -99,3 +99,5 @@ export const LectureDetail = ({onPress})=>{
     </Space>
 
 }
+
+export default LectureDetail
