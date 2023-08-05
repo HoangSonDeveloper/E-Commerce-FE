@@ -9,10 +9,10 @@ const iconSearch =
 
 const styles = {
     headerStyle: {
-        background: "white"
+        background: "white", marginBottom: 48
     },
-    contentStyle: {},
-    footerStyle: {},
+    contentStyle: {background: "white"},
+    footerStyle: {background: "white"},
     navItem: {
         marginLeft: 24, marginRight: 24
     },
@@ -47,7 +47,7 @@ const tabPage = [
 ];
 const Container = ({children}) => {
     return (
-        <Layout>
+        <Layout style={{background: "white"}}>
             <Header style={styles.headerStyle}>
                 <Row>
                     <Col span={8}>
