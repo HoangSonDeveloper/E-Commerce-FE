@@ -8,7 +8,7 @@ const Star = ({ rating }) => {
     return (
       <span key={index}>
         {rating >= index + 1 ? (
-          <FaStar className="icon" />
+          <FaStar className="icon" style={{ marginTop: 4, marginBottom: 4 }} />
         ) : rating >= number ? (
           <FaStarHalfAlt className="icon" />
         ) : (

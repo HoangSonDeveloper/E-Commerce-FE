@@ -15,8 +15,8 @@ import {useRouter} from 'next/navigation';
 
 const LoginPage = () => {
   const router = useRouter();
-  const [submittable, setSubmittable] = useState(false);
   const [form] = Form.useForm();
+  const [submittable, setSubmittable] = useState(false);
   const values = Form.useWatch([], form);
 
   useEffect(() => {
@@ -26,6 +26,7 @@ const LoginPage = () => {
       })
       .then(
         () => {
+          console.log(values);
           setSubmittable(true);
         },
         () => {
@@ -35,18 +36,48 @@ const LoginPage = () => {
   }, [values]);
 
   const onSubmit = async () => {
+    const name = form.getFieldValue('name');
     const email = form.getFieldValue('email');
     const password = form.getFieldValue('password');
-    await axios.post('/auth/login', {email, password}).then(res => {
+    await axios.post('/auth/register', {email, password, name}).then(res => {
       if (!!res?.id) {
         router.push('/');
       }
     });
   };
 
+  const validateConfirmPassword = (_, value) => {
+    const password = form.getFieldValue('password');
+    if (value && value !== password) {
+      return Promise.reject(new Error('Passwords do not match'));
+    }
+    return Promise.resolve();
+  };
+
   const renderForm = () => {
     return (
       <Form form={form} layout={'vertical'}>
+        <Form.Item
+          label="Name"
+          name="name"
+          rules={[
+            {
+              required: true,
+              message: 'Please enter your name',
+            },
+          ]}>
+          <Input
+            prefix={<UserOutlined className="site-form-item-icon" />}
+            style={{
+              height: '2.5rem',
+              padding: '0.75rem',
+              borderRadius: '0.25rem',
+              borderWidth: '1px',
+              borderColor: '#555FD9',
+            }}
+            placeholder="Enter your name..."
+          />
+        </Form.Item>
         <Form.Item
           label="Email address"
           name="email"
@@ -96,6 +127,31 @@ const LoginPage = () => {
             }
           />
         </Form.Item>
+        <Form.Item
+          label="Confirm Password"
+          name="confirmedPassword"
+          rules={[
+            {
+              required: true,
+              message: 'Please re-enter your password',
+            },
+            {validator: validateConfirmPassword},
+          ]}>
+          <Input.Password
+            prefix={<LockOutlined className="site-form-item-icon" />}
+            style={{
+              height: '2.5rem',
+              padding: '0.75rem',
+              borderRadius: '0.25rem',
+              borderWidth: '1px',
+              borderColor: '#555FD9',
+            }}
+            placeholder="Re-enter your password .."
+            iconRender={visible =>
+              visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+            }
+          />
+        </Form.Item>
         <Form.Item>
           <Row justify="space-between">
             <Col>
@@ -128,23 +184,21 @@ const LoginPage = () => {
                 : ''
             }
             disabled={!submittable}>
-            Log in
+            Sign up
           </Button>
         </Form.Item>
-
         <Divider></Divider>
-
         <p
           style={{
             textAlign: 'center',
             marginTop: '4px',
             marginBottom: '4px',
           }}>
-          Don't have account?
+          Already have an account?
         </p>
         <Button
           type="primary"
-          onClick={() => router.push('/sign-up')}
+          onClick={() => router.push('/login')}
           style={{
             width: '100%',
             height: '36px',
@@ -153,7 +207,7 @@ const LoginPage = () => {
             borderRadius: '0.25rem',
           }}
           className="bg-[#555FD9] hover:bg-[#1e2bb7] active:bg-[#040c6e]">
-          Sign up
+          Login
         </Button>
       </Form>
     );
@@ -169,7 +223,7 @@ const LoginPage = () => {
           marginTop: '20px',
           marginBottom: '20px',
         }}>
-        Login
+        Sign Up
       </p>
 
       <Row

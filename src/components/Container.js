@@ -82,7 +82,7 @@ const Container = ({children}) => {
                 </Row>
             </Header>
             <Content style={styles.contentStyle}>{children}</Content>
-            <Footer style={styles.footerStyle}>Footer</Footer>
+            {/*<Footer style={styles.footerStyle}>Footer</Footer>*/}
         </Layout>
     );
 };
