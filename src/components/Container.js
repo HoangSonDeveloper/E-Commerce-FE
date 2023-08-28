@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, Col, Image, Input, Layout, Menu, Row} from 'antd';
 import {
   LaptopOutlined,
@@ -57,7 +57,12 @@ const tabPage = [
 const authenticatedPage = [{id: 1, name: 'Lectures', key: 'lecturer'}];
 const Container = ({children}) => {
   const router = useRouter();
-  const token = localStorage.getItem('token');
+  const [token, setToken] = useState('');
+
+  useEffect(() => {
+    setToken(localStorage.getItem('token'));
+    return () => {};
+  }, []);
 
   const menuItem = !!token ? authenticatedPage : tabPage;
   return (
