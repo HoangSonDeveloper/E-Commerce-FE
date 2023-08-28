@@ -61,7 +61,7 @@ const LectureList = props => {
             overflow: 'scroll-x',
             flexWrap: 'no-wrap',
           }}>
-          {lecturers.map((i, ii) => {
+          {lecturers?.map?.((i, ii) => {
             return (
               <Col sm={12} xs={24} lg={8} xl={6} xxl={4}>
                 <LectureCard

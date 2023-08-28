@@ -20,6 +20,10 @@ const LoginPage = () => {
   const values = Form.useWatch([], form);
 
   useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!!token) {
+      router.push('/');
+    }
     form
       .validateFields({
         validateOnly: true,
@@ -37,11 +41,11 @@ const LoginPage = () => {
   const onSubmit = async () => {
     const email = form.getFieldValue('email');
     const password = form.getFieldValue('password');
-    await axios.post('/auth/login', {email, password}).then(res => {
-      if (!!res?.id) {
-        router.push('/');
-      }
-    });
+    const {result} = await axios.post('/auth/login', {email, password});
+
+    if (!!result?.user?.id) {
+      router.push('/');
+    }
   };
 
   const renderForm = () => {
@@ -144,7 +148,7 @@ const LoginPage = () => {
         </p>
         <Button
           type="primary"
-          onClick={() => router.push('/sign-up')}
+          onClick={() => router.push('/signup')}
           style={{
             width: '100%',
             height: '36px',

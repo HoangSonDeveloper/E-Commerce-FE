@@ -28,7 +28,7 @@ const CourseDetail = ({onPress}) => {
 
   const initData = async () => {
     const {id} = router.query;
-    const res = await api.get(`/courses/87d3c280-3b18-11ee-932c-374b4f7aa08f`);
+    const res = await api.get(`/courses/${id}`);
     setCourse(res);
   };
 

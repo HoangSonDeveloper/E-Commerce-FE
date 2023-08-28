@@ -40,13 +40,7 @@ const LectureCard = ({item, style = {}, onClick}) => {
 
   return (
     <Col style={styles.card}>
-      <Image
-        preview={false}
-        width={'100%'}
-        height={200}
-        src={avatar}
-        style={styles.ava}
-      />
+      <Image preview={false} width={'100%'} src={avatar} style={styles.ava} />
       <Col>
         <Text ellipsis={true} style={styles.name}>
           {name}

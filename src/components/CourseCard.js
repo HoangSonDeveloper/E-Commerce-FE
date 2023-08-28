@@ -2,7 +2,7 @@ import React from 'react';
 import {Button, Card, Col, Divider, Image, Rate, Row} from 'antd';
 import PriceUtils from '@/utils/priceUtils';
 
-const CourseCard = ({item}) => {
+const CourseCard = ({item, onPress}) => {
   const {
     starNum,
     name,
@@ -16,8 +16,15 @@ const CourseCard = ({item}) => {
     outcome,
     description,
   } = item;
-  console.log(item);
   const style = {};
+  let levelColor = '#34c759';
+
+  if (level === 'intermediate') {
+    levelColor = '#fa541c';
+  } else if (level === 'advanced') {
+    levelColor = '#f5222d';
+  }
+
   return (
     <Col style={styles.card}>
       <Image
@@ -28,11 +35,11 @@ const CourseCard = ({item}) => {
         style={styles.ava}
       />
       <Col>
-        <div style={{fontWeight: 'bold', marginTop: 12, marginBottom: 4}}>
+        <div style={{fontWeight: 'bold', marginTop: 12, marginBottom: 16}}>
           {name}
         </div>
-        <div style={{marginTop: 4, marginBottom: 4}}>{description}</div>
-        <div style={{fontWeight: 'bold', color: '#fa541c'}}>
+        <div style={{marginTop: 4, marginBottom: 12}}>{description}</div>
+        <div style={{fontWeight: 'bold', color: '#fa541c', marginBottom: 16}}>
           {PriceUtils.dPrice(price)}
         </div>
         <Row>
@@ -43,13 +50,49 @@ const CourseCard = ({item}) => {
         </Row>
       </Col>
       <Divider />
+      <Row style={{marginBottom: 12}}>
+        {categories.map(i => {
+          return (
+            <div
+              style={{
+                color: '#34c759',
+                background: '#34c759' + '33',
+                paddingTop: 4,
+                paddingBottom: 4,
+                paddingRight: 8,
+                paddingLeft: 8,
+                borderRadius: 16,
+                marginRight: 8,
+              }}>
+              {i?.name}
+            </div>
+          );
+        })}
+      </Row>
       <Row>
-        <Col>{level}</Col>
+        <Col
+          style={{
+            color: levelColor,
+            marginBottom: 12,
+            fontSize: 16,
+            fontWeight: 'semibold',
+          }}>
+          {level}
+        </Col>
         <Col>{videoNum}</Col>
         <Col>{sales}</Col>
       </Row>
       <Row>
-        <Button>Join Course</Button>
+        <Button
+          onClick={onPress}
+          style={{
+            borderRadius: 24,
+            background: '#fa541c',
+            color: 'white',
+            fontWeight: 'bold',
+          }}>
+          Join Course
+        </Button>
       </Row>
     </Col>
   );

@@ -19,13 +19,23 @@ const LecturerDetail = ({onPress}) => {
 
   const initData = async () => {
     const {id} = router.query;
-    const res = await api.get(
-      `/users/74bcb691-f8b4-426c-9c1f-c1032f192eab/taught-profile-courses`,
-    );
-    setLecturer(res);
-    setCourses(res?.courses);
+
+    const {result} = await api.get(`/users/${id}/taught-profile-courses`);
+    setLecturer(result);
+    setCourses(result?.courses);
+  };
+
+  const onJoinCourse = item => {
+    router.push({pathname: `/course/detail`, query: {id: item?.id ?? ''}});
   };
   const renderCoursesList = () => {
+    if (courses?.length === 0) {
+      return (
+        <div style={{textAlign: 'center', fontSize: 24}}>
+          This lecturer does not have any available course.
+        </div>
+      );
+    }
     return (
       <div style={{background: '#d8d8d8', padding: 60}}>
         <div
@@ -47,10 +57,10 @@ const LecturerDetail = ({onPress}) => {
             overflow: 'scroll-x',
             flexWrap: 'no-wrap',
           }}>
-          {courses.map(i => {
+          {courses?.map(i => {
             return (
               <Col xxl={6} md={12} xs={24}>
-                <CourseCard item={i} />;
+                <CourseCard onPress={() => onJoinCourse(i)} item={i} />
               </Col>
             );
           })}
@@ -61,17 +71,54 @@ const LecturerDetail = ({onPress}) => {
 
   const renderMainSection = () => {
     const {name, description, avatar, major, rating, title} = lecturer;
+    let ratingColor = '#34c759';
+
+    if (rating < 7) {
+      ratingColor = '#fa541c';
+    } else if (rating < 5) {
+      ratingColor = '#f5222d';
+    }
     return (
       <Row style={{background: '#fff', padding: 60}}>
-        <Col md={6} xs={24} style={{background: 'red'}}>
+        <Col md={6} xs={24} style={{}}>
           <Image preview={false} width={'100%'} src={avatar} />
         </Col>
-        <Col md={18} xs={24} style={{background: 'blue'}}>
-          <div>{name}</div>
-          <div>{title}</div>
-          <div>{description}</div>
-          <div>{major}</div>
-          <div>{rating}</div>
+        <Col md={18} xs={24} style={{}}>
+          <div style={{fontSize: 32, marginBottom: 8, fontWeight: 'bold'}}>
+            {name}
+          </div>
+          <div
+            style={{
+              fontSize: 24,
+              color: '#727272',
+              fontWeight: 'bold',
+              marginBottom: 12,
+            }}>
+            {title}
+          </div>
+          <div
+            style={{
+              fontSize: 18,
+              color: '#fa541c',
+              fontWeight: 'bold',
+              marginBottom: 12,
+            }}>
+            {major}
+          </div>
+          <div
+            style={{
+              marginBottom: 12,
+              fontSize: 16,
+            }}>
+            {description}
+          </div>
+          <div
+            style={{
+              fontSize: 16,
+              color: ratingColor,
+            }}>
+            {rating}
+          </div>
         </Col>
       </Row>
     );
