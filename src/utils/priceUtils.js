@@ -8,14 +8,14 @@ const HUNDRED = 100;
 
 export default class PriceUtils {
   static vndPrice = price => {
-    return new Intl.NumberFormat('VND').format(+price) + ' VND';
+    return new Intl.NumberFormat('USD').format(+price) + ' USD';
   };
 
   static dPrice = price => {
-    return new Intl.NumberFormat('VND').format(+price) + 'đ';
+    return new Intl.NumberFormat('USD').format(+price) + '$';
   };
 
   static vndPriceWithoutSymbol = price => {
-    return new Intl.NumberFormat('VND').format(+price);
+    return new Intl.NumberFormat('USD').format(+price);
   };
 }

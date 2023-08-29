@@ -20,8 +20,8 @@ const LoginPage = () => {
   const values = Form.useWatch([], form);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!!token) {
+    const user = localStorage.getItem('user');
+    if (!!user) {
       router.push('/');
     }
     form
@@ -41,11 +41,19 @@ const LoginPage = () => {
   const onSubmit = async () => {
     const email = form.getFieldValue('email');
     const password = form.getFieldValue('password');
-    const {result} = await axios.post('/auth/login', {email, password});
+    const {result} = await axios.post(
+      '/auth/login',
+      {email, password},
+      {
+        withCredentials: true,
+      },
+    );
 
     if (!!result?.user?.id) {
       router.push('/');
     }
+
+    localStorage.setItem('user', JSON.stringify(result));
   };
 
   const renderForm = () => {

@@ -77,7 +77,7 @@ const CourseCard = ({item, onPress}) => {
             fontSize: 16,
             fontWeight: 'semibold',
           }}>
-          {level}
+          Level: {level}
         </Col>
         <Col>{videoNum}</Col>
         <Col>{sales}</Col>
@@ -87,11 +87,12 @@ const CourseCard = ({item, onPress}) => {
           onClick={onPress}
           style={{
             borderRadius: 24,
+            marginBottom: 12,
             background: '#fa541c',
             color: 'white',
             fontWeight: 'bold',
           }}>
-          Join Course
+          View Available Classes
         </Button>
       </Row>
     </Col>

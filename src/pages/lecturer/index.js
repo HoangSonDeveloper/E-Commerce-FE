@@ -36,8 +36,8 @@ const LectureList = props => {
   };
 
   const initData = async () => {
-    const res = await api.get('/users/instructors');
-    setLecturers(res?.result);
+    const {result} = await api.get('/users/instructors');
+    setLecturers(result?.users);
   };
   const renderFeatured = () => {
     return (
@@ -50,7 +50,7 @@ const LectureList = props => {
             textAlign: 'center',
             marginBottom: 24,
           }}>
-          featured lectures
+          featured coaches
         </div>
         <Row
           gutter={[24, 24]}

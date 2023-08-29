@@ -17,12 +17,14 @@
     "eslint": "8.43.0",
     "eslint-config-next": "13.4.7",
     "intl": "^1.2.5",
+    "js-cookie": "^3.0.5",
     "next": "13.4.7",
     "postcss": "8.4.24",
     "prettier": "^3.0.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.10.1",
+    "react-spinners": "^0.13.8",
     "tailwindcss": "3.3.2"
   }
 }

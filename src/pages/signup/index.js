@@ -20,8 +20,8 @@ const LoginPage = () => {
   const values = Form.useWatch([], form);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!!token) {
+    const user = localStorage.getItem('user');
+    if (!!user) {
       router.push('/');
     }
     form
@@ -30,7 +30,6 @@ const LoginPage = () => {
       })
       .then(
         () => {
-          console.log(values);
           setSubmittable(true);
         },
         () => {
@@ -50,7 +49,7 @@ const LoginPage = () => {
     });
 
     if (!!result?.user?.id) {
-      router.push('/');
+      router.push('/login');
     }
   };
 
