@@ -50,7 +50,7 @@ const LectureList = props => {
             textAlign: 'center',
             marginBottom: 24,
           }}>
-          featured lectures
+          featured coaches
         </div>
         <Row
           gutter={[24, 24]}

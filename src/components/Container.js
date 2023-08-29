@@ -56,12 +56,14 @@ const Container = ({children}) => {
   }, []);
 
   const tabPage = [
-    {id: 3, name: 'Featured Coaches', key: 'lecturer'},
+    {id: 3, name: 'Featured Lecturers', key: 'lecturer'},
     {id: 4, name: 'Featured Courses', key: 'courses'},
     {id: 5, name: 'Categories', key: 'category'},
   ];
 
-  user ? tabPage.unshift({id: 1, name: `Welcome back, ${user.name}!`}) : tabPage.push(
+  user ? tabPage.unshift({id: 1, name: `Welcome back, ${user.user?.name}!`, key: 'profile'}) && tabPage.push(
+    {id: 6, name: 'Log out', key: 'logout'}
+  ) : tabPage.push(
     {id: 1, name: 'Login', key: 'login'},
     {id: 2, name: 'Join us', key: 'signup'});
 

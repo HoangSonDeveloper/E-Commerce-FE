@@ -30,7 +30,6 @@ const LoginPage = () => {
       })
       .then(
         () => {
-          console.log(values);
           setSubmittable(true);
         },
         () => {
@@ -50,7 +49,7 @@ const LoginPage = () => {
     });
 
     if (!!result?.user?.id) {
-      router.push('/');
+      router.push('/login');
     }
   };
 

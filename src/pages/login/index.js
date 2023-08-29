@@ -49,7 +49,7 @@ const LoginPage = () => {
       router.push('/');
     }
 
-    localStorage.setItem("user", JSON.stringify(result.user));
+    localStorage.setItem("user", JSON.stringify(result));
   };
 
   const renderForm = () => {
