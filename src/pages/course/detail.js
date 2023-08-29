@@ -62,8 +62,12 @@ const CourseDetail = ({onPress}) => {
     try {
       const checkoutSession = await api.post(
         '/payment/create-checkout-session',
-        {},
-        {withCredentials: true},
+        {
+          courseId: course.id,
+        },
+        {
+          withCredentials: true,
+        }
       );
       router.push(checkoutSession.url);
     } catch (e) {

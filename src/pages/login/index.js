@@ -12,6 +12,7 @@ import {
 import {useEffect, useState} from 'react';
 import axios from '@/utils/axios';
 import {useRouter} from 'next/navigation';
+import api from '@/utils/axios';
 
 const LoginPage = () => {
   const router = useRouter();
@@ -41,7 +42,7 @@ const LoginPage = () => {
   const onSubmit = async () => {
     const email = form.getFieldValue('email');
     const password = form.getFieldValue('password');
-    const {result} = await axios.post(
+    const {result} = await api.post(
       '/auth/login',
       {email, password},
       {

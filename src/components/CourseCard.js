@@ -4,7 +4,7 @@ import PriceUtils from '@/utils/priceUtils';
 
 const CourseCard = ({item, onPress}) => {
   const {
-    starNum,
+    rating,
     name,
     categories,
     time,
@@ -45,7 +45,7 @@ const CourseCard = ({item, onPress}) => {
         <Row>
           {/*<Col span={6}>{category}</Col>*/}
           <Row>
-            <Rate value={starNum} allowHalf disabled />
+            <Rate value={rating} allowHalf disabled />
           </Row>
         </Row>
       </Col>

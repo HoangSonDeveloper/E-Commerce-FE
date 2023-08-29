@@ -12,7 +12,7 @@ const UserProfile = () => {
 
   useEffect(() => {
     const {user} = JSON.parse(localStorage.getItem('user'));
-
+    console.log(user);
     setUser(user);
   }, []);
   const {title, major, description, rating, avatar} = user;
