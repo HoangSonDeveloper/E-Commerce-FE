@@ -15,7 +15,7 @@ const UserProfile = () => {
     console.log(user);
     setUser(user);
   }, []);
-  const {title, major, description, rating, avatar} = user;
+  const {name, title, major, description, rating, avatar} = user;
 
   let ratingColor = '#34c759';
 
