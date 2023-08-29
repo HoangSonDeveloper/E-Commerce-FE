@@ -7,6 +7,7 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 import {useRouter} from 'next/router';
+import Cookies from 'js-cookie';
 
 const {Header, Footer, Sider, Content} = Layout;
 
@@ -46,25 +47,24 @@ const styles = {
   },
 };
 
-const tabPage = [
-  {id: 1, name: 'Lectures', key: 'lecturer'},
-  // {id: 2, name: 'Courses', key: 'courses'},
-  // {id: 3, name: 'About Us', key: 'lecturer'},
-  {id: 4, name: 'Login', key: 'login'},
-  {id: 5, name: 'Join us', key: 'signup'},
-];
-
-const authenticatedPage = [{id: 1, name: 'Lectures', key: 'lecturer'}];
 const Container = ({children}) => {
   const router = useRouter();
-  const [token, setToken] = useState('');
+  const [user, setUser] = useState({});
 
   useEffect(() => {
-    setToken(localStorage.getItem('token'));
-    return () => {};
+    setUser(JSON.parse(localStorage.getItem("user")))
   }, []);
 
-  const menuItem = !!token ? authenticatedPage : tabPage;
+  const tabPage = [
+    {id: 3, name: 'Featured Coaches', key: 'lecturer'},
+    {id: 4, name: 'Featured Courses', key: 'courses'},
+    {id: 5, name: 'Categories', key: 'category'},
+  ];
+
+  user ? tabPage.unshift({id: 1, name: `Welcome back, ${user.name}!`}) : tabPage.push(
+    {id: 1, name: 'Login', key: 'login'},
+    {id: 2, name: 'Join us', key: 'signup'});
+
   return (
     <Layout style={{background: 'white'}}>
       <Header style={styles.headerStyle}>
@@ -73,7 +73,7 @@ const Container = ({children}) => {
             <Menu
               mode="horizontal"
               overflowedIndicator={<MenuOutlined />}
-              items={menuItem?.map?.((i, ii) => {
+              items={tabPage?.map?.((i, ii) => {
                 return {
                   key: i.key,
                   label: i.name,

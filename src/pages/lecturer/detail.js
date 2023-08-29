@@ -117,7 +117,7 @@ const LecturerDetail = ({onPress}) => {
               fontSize: 16,
               color: ratingColor,
             }}>
-            {rating}
+            Rating: {rating}
           </div>
         </Col>
       </Row>

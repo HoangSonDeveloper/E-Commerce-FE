@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://api.learnbox.live',
+  // baseURL: 'https://api.learnbox.live',
+  baseURL: 'http://localhost:5001',
   timeout: 60000,
 });
 

@@ -41,11 +41,15 @@ const LoginPage = () => {
   const onSubmit = async () => {
     const email = form.getFieldValue('email');
     const password = form.getFieldValue('password');
-    const {result} = await axios.post('/auth/login', {email, password});
+    const {result} = await axios.post('/auth/login', {email, password}, {
+      withCredentials: true,
+    });
 
     if (!!result?.user?.id) {
       router.push('/');
     }
+
+    localStorage.setItem("user", JSON.stringify(result.user));
   };
 
   const renderForm = () => {
